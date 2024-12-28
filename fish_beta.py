@@ -5,10 +5,10 @@ from telebot import types
 
 bot = telebot.TeleBot("7124793024:AAFYtWb-cRZinYuVgJE0TkmE4j6XAlOCLNo")
 fish = [0, 0, 0, 0, 0, 0]
-locals = ["пруд", "карп", "серебряный карась", "линь", 4, 3, 2]
+locals = ["лужа", "Карп", "Серебряный карась", "Линь", 4, 3, 2]
 name = ""
 fishing = [0, 5, 2, 7, 5, 10]
-maney = 0
+maney = 4567898765435678
 ex = [0, 0, 0, 1500]
 frod = "деревяннаяУдочка"
 bait = 0
@@ -58,7 +58,7 @@ def fishi(message):
     marcup.add(types.KeyboardButton("/fish"))
     marcup.add(types.KeyboardButton("/sale"))
 
-    global fish,maney, alco
+    global fish,maney, alco, locals
     fish[0] = random.randint(fishing[0], fishing[1])
     fish[1] = random.randint(fishing[2], fishing[3])
     fish[2] = random.randint(fishing[4], fishing[5])
@@ -67,7 +67,7 @@ def fishi(message):
     fish[5] += fish[2]
     ex[0] = random.randint(15, 30)
     ex[1] += ex[0] * alco[0]
-    if alco >= 0.5:
+    if alco[1] >= 0.5:
         alco[1] -= 0.5
 
     elif ex[1] >= ex[3]:
@@ -80,14 +80,14 @@ def fishi(message):
             bot.send_message(message.chat.id, f"Вы набухались и умерли. С вас снято 50.000")
             maney -= 50000
         else:
-            bot.send_message(message.chat.id, f"Вы выловили {fish[0], fish[1], fish[2]}\nВcего рыбы {fish[3], fish[4], fish[5]} \nВы заработали {ex[0]} опыта", reply_markup= marcup)
+            bot.send_message(message.chat.id, f"Вы выловили \n🐡{locals[1]} - {fish[0]}\n🐠{locals[2]} - {fish[1]}\n🐟{locals[3]} - {fish[2]}\nВcего рыбы {fish[3], fish[4], fish[5]} \n\nВы заработали {ex[0]} опыта", reply_markup= marcup)
     else:
         if alco[1] >= 100:
             bot.send_message(message.chat.id, f"Вы набухались и умерли. С вас снято 50.000")
             alco[1] = 0
             maney -= 50000
         else:
-            bot.send_message(message.chat.id, f"Вы выловили {fish[0], fish[1], fish[2]}\nВcего рыбы {fish[3], fish[4], fish[5]} \nВы заработали {ex[0]} опыта", reply_markup= marcup)
+            bot.send_message(message.chat.id, f"Вы выловили \n🐡{locals[1]} - {fish[0]}\n🐠{locals[2]} - {fish[1]}\n🐟{locals[3]} - {fish[2]}\nВcего рыбы {fish[3], fish[4], fish[5]} \n\nВы заработали {ex[0]} опыта", reply_markup= marcup)
 
 @bot.message_handler(commands=["stats"])
 def stats(message):
@@ -201,6 +201,24 @@ def callback_inline(call):
         elif 50 <= alco[1] <= 100:
             alco[0] = 1.5
         bot.send_message(call.message.chat.id, "вино куплено и выпито")
+
+    elif call.data == "homebt":
+        listbt.tov = ["⚓.", "💧", "🐟", "🌊", "home", "baykalby", "amazonkaby", "okeanby", "locdalshe"]
+        listbt.text = "⚓ Дом. Бесплатно.\n💧 Байкал 250.000\n🐟 Амазонка 750.000\n🌊 Ирландский океан 2.500.000"
+        listbt.a(call.message)
+
+    elif call.data == "baykalby":
+        global locals
+        locals = ["ай мишаня Байкал", "Байкальский осётр", "Голомянка", "Омуль", 6, 5, 4]
+        bot.send_message(call.message.chat.id, "Вы можете рыбачить на Байкале! +100 социал кредит и кошка жена")
+
+    elif call.data == "amazonkaby":
+        locals = ["Амазонка", "Электрический угорь", "Рыба-волк", "Пираньи", 8, 7, 6]
+        bot.send_message(call.message.chat.id, "Вы приехали в БРАЗИЛ(иу) не умрите на Амазонке там очень опасно")
+
+    elif call.data == "okeanby":
+        locals = ["Ирландский океан", "Морской угорь", "Хек", "Мерланг", 10, 9, 8]
+        bot.send_message(call.message.chat.id, "В\nС\nЁ")
 
 #базы данных
 @bot.message_handler(commands=["start"])
