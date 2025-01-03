@@ -8,10 +8,10 @@ fish = [0, 0, 0, 0, 0, 0]
 locals = ["лужа", "Карп", "Серебряный карась", "Линь", 4, 3, 2]
 name = ""
 fishing = [0, 5, 2, 7, 5, 10]
-maney = 4567898765435678
+maney = 0
 ex = [0, 0, 0, 1500]
 frod = "деревяннаяУдочка"
-bait = 0
+bait = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 alco = [1, 0]
 
 class list():
@@ -58,20 +58,44 @@ def fishi(message):
     marcup.add(types.KeyboardButton("/fish"))
     marcup.add(types.KeyboardButton("/sale"))
 
-    global fish,maney, alco, locals
-    fish[0] = random.randint(fishing[0], fishing[1])
-    fish[1] = random.randint(fishing[2], fishing[3])
-    fish[2] = random.randint(fishing[4], fishing[5])
+    global fish,maney, alco, locals, bait
+    fish[0] = random.randint(fishing[0], fishing[1]) + (bait[6] + bait[7] + bait[8]) + bait[5]
+    fish[1] = random.randint(fishing[2], fishing[3]) + (bait[6] + bait[7] + bait[8]) + bait[5]
+    fish[2] = random.randint(fishing[4], fishing[5]) + (bait[6] + bait[7] + bait[8]) + bait[5]
     fish[3] += fish[0]
     fish[4] += fish[1]
     fish[5] += fish[2]
     ex[0] = random.randint(15, 30)
     ex[1] += ex[0] * alco[0]
+
+    if bait[0] >= 1:
+        bait[0] -= 1
+        if bait[0] == 0:
+            bait[6] = 0
+        else:
+            pass
+
+    elif bait[1] >= 1:
+        bait[1] -= 1
+        if bait[1] == 0:
+            bait[7]= 0
+        else:
+            pass
+
+    elif bait[2] >= 1:
+        bait[2] -= 1
+        if bait[2] == 0:
+            bait[8] = 0
+        else:
+            pass
+
+
+
     if alco[1] >= 0.5:
         alco[1] -= 0.5
 
     elif ex[1] >= ex[3]:
-        ex[3] += 1.5
+        ex[3] *= 1.5
         ex[2] += 1
         ex[1] -= ex[3]
         maney += 5000
@@ -91,8 +115,8 @@ def fishi(message):
 
 @bot.message_handler(commands=["stats"])
 def stats(message):
-    global ex, name, maney, frod
-    bot.send_message(message.chat.id, f"Статистика {name} \nУровень: {ex[2]} \nOпыта: {ex[1]} nДенег: {maney} \nУдочка: {frod}\nПьяны на {alco[1]}\nУровень красноречия {alco[0]}\nМесто: {locals[0]}")
+    global ex, name, maney, frod, bait
+    bot.send_message(message.chat.id, f"Статистика {name} \nУровень: {ex[2]} \nOпыта: {ex[1]} \nДенег: {maney} \nУдочка: {frod}\nПьяны на {alco[1]}\nУровень красноречия {alco[0]}\nМесто: {locals[0]}\nХлеба: {bait[0]}\nЧервяков: {bait[1]}\nМагнитов: {bait[2]}")
 
 
 @bot.message_handler(commands=["sale"])
@@ -130,7 +154,40 @@ def callback_inline(call):
         listbt.text = "🌲 сосновая удочка 20.000 \n🎋 бамбуковая удочка 40.000 \n🌵 кактусовая удочка 80.000\n🌽 кукурузная удочка 160.000"
         listbt.a(call.message)
 
-    #fishing = [0, 5, 2, 7, 5, 10]
+    elif call.data == "baitbt":
+        listbt.tov = ["🍞", "🐛", "🧲", "🦈", "breadby", "wormsby", "magnetby","sharkby", "dalshebtworms"]
+        listbt.text = "🍞 хлеб 10x50\n🐛 червяк(да это гусеница) 25x50\n🧲 магнит 50x50\n🦈 акула(питомец) 999.999.999.999.999x1"
+        listbt.a(call.message)
+    
+    elif call.data == "breadby":
+        global maney, alco, locals
+        bait[0] += 50
+        maney -= 500
+        bait[6] = 1
+        bot.send_message(call.message.chat.id ,"Вы купили хлеб для наживки")
+        
+    elif call.data == "wormsby":
+        bait[1] += 50
+        maney -= 1250
+        bait[7] = 1
+        bot.send_message(call.message.chat.id ,"Вы купили червяка для наживки")
+
+    elif call.data == "magnetby":
+        bait[2] += 50
+        maney -= 2500
+        bait[8] = 1
+        bot.send_message(call.message.chat.id ,"Вы купили фолшебный магнит для наживки")
+        
+    elif call.data == "sharkby":
+        if maney >= 99999999999999999:
+            bait[3] += 50
+            maney -= 99999999999999999
+            bait[5] == 99999999999999999
+            bot.send_message(call.message.chat.id ,"Вы прошли игру! Поздравляю! Теперь акула ловит рыбу вместо вас")
+        else:
+            bot.send_message(call.message.chat.id ,"Вы бомж")
+
+
     elif call.data == "woodrodby":
         listbt.rodb = ["сосноваяУдочка", "Вы купили сосновую удочку!"]
         listbt.fishin = [1, 5, 3, 7, 7, 10, 7500]
@@ -158,7 +215,6 @@ def callback_inline(call):
         listbt.a(call.message)
 
     elif call.data == "beerby":
-        global maney, alco
         alco[1] += 4
         maney -= 550
         if 1 <= alco[1] <= 10:
@@ -208,7 +264,6 @@ def callback_inline(call):
         listbt.a(call.message)
 
     elif call.data == "baykalby":
-        global locals
         locals = ["ай мишаня Байкал", "Байкальский осётр", "Голомянка", "Омуль", 6, 5, 4]
         bot.send_message(call.message.chat.id, "Вы можете рыбачить на Байкале! +100 социал кредит и кошка жена")
 
