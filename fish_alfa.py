@@ -10,7 +10,7 @@ beer = 0
 
 
 
-bot = telebot.TeleBot("7124793024:AAG3cmFwLmd2QBGayCKugouH1-03epP8NEI")
+bot = telebot.TeleBot()
 
 @bot.message_handler(commands= ["start"])
 def start(message):
