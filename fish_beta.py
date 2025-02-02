@@ -3,7 +3,7 @@ import sqlite3
 import random
 from telebot import types
 
-bot = telebot.TeleBot("7124793024:AAFYtWb-cRZinYuVgJE0TkmE4j6XAlOCLNo")
+bot = telebot.TeleBot()
 fish = [0, 0, 0, 0, 0, 0]
 locals = ["лужа", "Карп", "Серебряный карась", "Линь", 4, 3, 2]
 name = ""
